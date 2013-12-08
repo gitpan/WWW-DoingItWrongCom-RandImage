@@ -15,9 +15,14 @@ my $builder = Module::Build->new(
         'URI'                      => 1.35,
         'LWP::UserAgent'           => 2.036,
         'HTML::TokeParser::Simple' => 3.15,
+        'perl' => '5.006',
     },
+    configure_requires => { 'Module::Build' => 0 },
     add_to_cleanup      => [ 'WWW-DoingItWrongCom-RandImage-*' ],
     create_makefile_pl => 'traditional',
 );
+if ( $ENV{RELEASE_TESTING} ) {
+    system('pod2text lib/WWW/DoingItWrongCom/RandImage.pm > README');
+}
 
 $builder->create_build_script();

@@ -3,7 +3,7 @@ package WWW::DoingItWrongCom::RandImage;
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '1.01';
 
 use Carp;
 use URI;
@@ -33,11 +33,11 @@ sub fetch {
     my $self = shift;
 
     $self->err_msg( undef );
-    
+
     my $ua = LWP::UserAgent->new( %{ $self->{ua_args} || {} } );
-    
+
     my $response = $ua->get( $self->{site_uri} );
-    
+
     if ( $response->is_success ) {
         return $self->_parse_response( $response->content );
     }
@@ -52,7 +52,7 @@ sub fetch {
 sub _parse_response {
     my $self = shift;
     my $content = shift;
-    
+
     my $parser = HTML::TokeParser::Simple->new( \$content );
     while ( my $token = $parser->get_token ) {
         if ( $token->is_start_tag('img') ) {
@@ -76,6 +76,8 @@ sub err_msg {
 
 1;
 __END__
+
+=encoding utf8
 
 =head1 NAME
 
@@ -123,7 +125,7 @@ It takes one I<optional> argument:
             timeout => 20,
             agent   => 'WrongAgent',
         },
-    ); 
+    );
 
 B<Optional>. The C<ua_args> argument takes a hashref as a value which
 will be passed to L<LWP::UserAgent> object constructor. See
